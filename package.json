@@ -3,12 +3,16 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "axios": "^0.17.1",
+    "cloudinary": "^1.9.1",
     "jquery": "^3.2.1",
     "node-sass-chokidar": "^0.0.3",
     "npm-run-all": "^4.1.2",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
+    "react-dropzone": "^4.2.3",
     "react-scripts": "1.0.17",
+    "superagent": "^3.8.1",
     "typed.js": "^2.0.6"
   },
   "scripts": {
