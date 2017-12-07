@@ -1,8 +1,15 @@
 import React, {Component} from "react";
-import DocumentMeta from 'react-document-meta';
+import DocumentMeta from "react-document-meta";
+import {Redirect} from "react-router";
 
 
 export default class View extends Component {
+
+    constructor(props) {
+        super(props);
+    }
+
+
 
     render() {
         const meta = {
@@ -10,18 +17,22 @@ export default class View extends Component {
             description: 'I am a description, and I can create multiple tags',
             canonical: 'http://example.com/path/to/page',
             meta: {
-                charset: 'utf-8',
+                charSet: 'utf-8',
                 name: {
                     keywords: 'react,meta,document,html,tags'
+                },
+                property: {
+                    'og:image': 'http://example.com/image.jpg',
                 }
+            },
+            auto: {
+                ograph: true
             }
         };
 
         return (
             <DocumentMeta {...meta}>
-                <div>
-                    HELLO
-                </div>
+                {/*<Redirect to="/" push/>*/}
             </DocumentMeta>
 
         );

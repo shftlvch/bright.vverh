@@ -8,6 +8,7 @@
 
 # production
 /build
+/babel-src
 
 # misc
 .DS_Store

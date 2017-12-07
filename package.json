@@ -4,25 +4,43 @@
   "private": true,
   "dependencies": {
     "axios": "^0.17.1",
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
     "cloudinary": "^1.9.1",
+    "ignore-styles": "^5.0.1",
     "jquery": "^3.2.1",
+    "md5-file": "^3.2.3",
+    "morgan": "^1.9.0",
     "node-sass-chokidar": "^0.0.3",
+    "nodemon": "^1.12.5",
     "npm-run-all": "^4.1.2",
     "react": "^16.2.0",
     "react-document-meta": "^2.1.2",
     "react-dom": "^16.2.0",
     "react-dropzone": "^4.2.3",
+    "react-redux": "^5.0.6",
     "react-router-dom": "^4.2.2",
     "react-scripts": "1.0.17",
     "superagent": "^3.8.1",
     "typed.js": "^2.0.6"
   },
   "scripts": {
-    "build-css": "node-sass-chokidar src/ -o src/",
-    "watch-css": "npm run build-css && node-sass-chokidar src/ -o src/ --watch --recursive",
-    "start": "PORT=3001 react-scripts start",
-    "build": "react-scripts build",
+    "start": "react-scripts start",
+    "start:dev:server": "NODE_ENV=development nodemon server/index.js",
+    "start:prod:server": "NODE_ENV=production node server/index.js",
+    "now-start": "NODE_ENV=production node server/index.js",
+    "now-build": "npm run build:client && npm run babelify",
+    "babelify": "NODE_ENV=production babel src --out-dir babel-src --copy-files --ignore '**/*.test.js'",
+    "clean": "rimraf build babel-src",
+    "build:client": "react-scripts build",
+    "build": "yarn build:client && yarn babelify",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
+  },
+  "babel": {
+    "presets": [
+      "env",
+      "react-app"
+    ]
   }
 }

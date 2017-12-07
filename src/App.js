@@ -1,12 +1,12 @@
 import React, {Component} from "react";
 
 import "./App.css";
-import logo from './assets/logo.png';
+import logo from "./assets/logo.png";
 import "./assets/font-awesome/css/font-awesome.css";
 import $ from "jquery";
 import Typed from "typed.js";
 import request from "superagent";
-import Dropzone from 'react-dropzone'
+import Dropzone from "react-dropzone";
 
 const CLOUDINARY_UPLOAD_PRESET = 'b9txgygb';
 const CLOUDINARY_UPLOAD_URL = 'https://api.cloudinary.com/v1_1/vverh/upload';
@@ -16,7 +16,6 @@ class App extends Component {
         super(props);
         this.state = {
             icon: 'fa-heart',
-            placeholder: 0,
             placeholders: [
                 'я танцую',
                 'я пою',
@@ -24,18 +23,23 @@ class App extends Component {
                 'прихожу в Вверх',
             ],
             fileUrl: '',
+            hasImage: false,
+            isLoading: false,
+            reason: '',
+            valid: true,
+            imageGenerated: false
         };
 
 
         this.changeIcon = this.changeIcon.bind(this);
-        this.changePlaceholder = this.changePlaceholder.bind(this);
         this.onDrop = this.onDrop.bind(this);
+        this.onSend = this.onSend.bind(this);
+        this.handleChange = this.handleChange.bind(this);
     }
 
     componentDidMount() {
 
         let btnTimer = setInterval(this.changeIcon, 1000);
-        // let placeholderTimer = setInterval(this.changePlaceholder, 1000);
 
         let typed = new Typed('.form__input', {
             strings: this.state.placeholders,
@@ -55,14 +59,6 @@ class App extends Component {
         this.setState({icon})
     }
 
-    changePlaceholder() {
-        let placeholders = this.state.placeholders,
-            placeholder = placeholders.length - 1 > this.state.placeholder ? (this.state.placeholder + 1) : 0;
-
-
-        this.setState({placeholder});
-    }
-
     onDrop(files) {
         this.setState({
             uploadedFile: files[0]
@@ -70,10 +66,35 @@ class App extends Component {
         this.handleImageUpload(files[0]);
     }
 
+    onSend() {
+        if (!this.state.reason) {
+            let timerId = setInterval(() => {
+                this.setState({valid: !this.state.valid});
+            }, 100);
+
+            setTimeout(() => {
+                clearInterval(timerId);
+                this.setState({valid: true});
+            }, 1500);
+        } else {
+            this.setState({imageGenerated: true});
+        }
+
+
+        console.log('send');
+
+    }
+
+    handleChange(event) {
+        this.setState({reason: event.target.value});
+    }
+
     handleImageUpload(file) {
         let upload = request.post(CLOUDINARY_UPLOAD_URL)
             .field('upload_preset', CLOUDINARY_UPLOAD_PRESET)
             .field('file', file);
+
+        this.setState({isLoading: true});
 
         upload.end((err, response) => {
             if (err) {
@@ -82,7 +103,9 @@ class App extends Component {
 
             if (response.body.secure_url !== '') {
                 this.setState({
-                    fileUrl: response.body.secure_url
+                    fileUrl: response.body.secure_url,
+                    hasImage: true,
+                    isLoading: false,
                 });
             }
         });
@@ -95,19 +118,40 @@ class App extends Component {
         return (
             <div>
                 <div className="image" style={{backgroundImage: 'url(' + this.state.fileUrl + ')'}}/>
-                {/*<div className="logo"><img src={logo}/></div>*/}
-                <div className="form-wrapper" style={{backgroundColor: this.state.fileUrl ? 'rgba(229, 106, 99, .8)' : 'rgba(229, 106, 99, 1)'}}>
-                    <form method="POST" className="form">
-                        <header className="form__header">#мне_не_серо_когда</header>
-                        <input className="form__input" placeholder={placeholder}/>
-                        <Dropzone className="form__file" onDrop={this.onDrop.bind(this)} accept="image/jpeg,image/png,image/gif">
-                            <i className={"fa " + icon} aria-hidden="true"/>
-                            Сэлфи или картинка
-                        </Dropzone>
+                <div className="container"
+                     style={{backgroundColor: this.state.hasImage ? 'rgba(229, 106, 99, .8)' : 'rgba(229, 106, 99, 1)'}}>
+                    <a href="https://vverh.su/" target="_blank" className="logo"><img className="logo__image"
+                                                                                      src={logo}/></a>
+                    {!this.state.imageGenerated ? <div className="form-wrapper">
+                        <div className="form">
+                            <header className="form__header">#мне_не_серо_когда</header>
+                            <input className={'form__input ' + (!this.state.valid ? 'form__input_error' : '') }
+                                   value={this.state.reason} onChange={this.handleChange} placeholder={placeholder}/>
+                            {!this.state.hasImage ?
+                                <Dropzone className="form__file" onDrop={this.onDrop.bind(this)}
+                                          accept="image/jpeg,image/png,image/gif">
 
-                        {/*<input className="form__btn" type="submit" value="Отправить"/>*/}
-                    </form>
+                                    {!this.state.isLoading ? [<i className={"fa " + icon}
+                                                                 aria-hidden="true"/>, 'Сэлфи или картинка'] :
+                                        <i className="fa fa-refresh fa-spin fa-fw" aria-hidden="true"/>}
+                                </Dropzone> :
+                                <div className="form__btn" onClick={this.onSend}>Сделать картинку</div>
+                            }
+                        </div>
+                    </div> :
+                        <img style={{width: '100%'}} src={this.state.fileUrl}/>
+                    }
+                    <div className="note">
+                        <div className="note__line"/>
+                        <p className="note__text">Как побороть серость вокруг? Пожаловаться в соцсетях? Нет, этот
+                            путь не для нас. Наоборот, расскажите друзьям что держит вас в колее и помогает не
+                            унывать эти 7 месяцев в году.</p>
+                        <div className="note__copy">Сделано с <a target="_blank"
+                                                                 href="https://www.facebook.com/daniil.dntcare">אהבה</a>
+                        </div>
+                    </div>
                 </div>
+
             </div>
         );
     }

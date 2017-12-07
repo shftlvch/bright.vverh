@@ -6,8 +6,7 @@ body {
     background: linear-gradient(135deg, rgba(147, 206, 222, 1) 0%, rgba(117, 189, 209, 1) 52%, rgba(73, 165, 191, 1) 100%);
 }
 
-
-.form-wrapper {
+.container {
     top: 0;
     left: 0;
     position: absolute;
@@ -16,12 +15,18 @@ body {
     align-items: center;
     height: 100vh;
     width: 100vw;
+    flex-direction: column;
     background: rgba(229, 106, 99, 1);
     z-index: 10;
     transition: 1s;
     transition-delay: .3s;
-    /*background: rgba(147,206,222,1);*/
-    /*background: linear-gradient(135deg, rgba(147,206,222,1) 0%, rgba(117,189,209,1) 52%, rgba(73,165,191,1) 100%);*/
+}
+
+.form-wrapper {
+    margin: auto 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .form {
@@ -44,6 +49,10 @@ body {
     color: #76c4be;
     /*color: #b84c46;*/
     margin-bottom: 55px;
+}
+
+.form__input.form__input_error::placeholder {
+    color: #fbdfe1;
 }
 
 .form__file {
@@ -73,7 +82,24 @@ body {
 }
 
 .form__btn {
+    font-size: 1em;
+    color: white;
+    background-color: #76c4be;
+    display: inline-block;
+    cursor: pointer;
+    margin: 0 auto 20px auto;
+    padding: 10px 25px;
+    text-align: center;
+    box-sizing: border-box;
+    border: none;
+}
 
+.form__btn:focus {
+    outline: none;
+}
+.form__btn:focus,
+.form__btn:hover {
+    background-color: #70b9b3;
 }
 
 .image {
@@ -85,6 +111,41 @@ body {
     background-size: cover;
     background-position: center center;
     z-index: 9;
+}
+
+.logo {
+    height: 80px;
+    text-align: center;
+    width: 100%;
+    margin-top: 40px;
+    margin-bottom: auto;
+}
+
+.logo__image {
+    height: 100%;
+    filter: grayscale(100%) invert(40%);
+}
+
+.note {
+    padding: 0 20px;
+    margin-bottom: 70px;
+    margin-top: auto;
+    color: #fbdfe1;
+    font-size: 14px;
+    text-align: center;
+}
+
+.note__copy a {
+    color: #f7cdce;
+    text-decoration: none;
+    border-bottom: 1px dashed;
+}
+
+.note__line {
+    border-bottom: solid 1px #f7cdce;
+    padding: 0 40px;
+    margin: 0 auto 10px auto;
+    width: 20px;
 }
 
 @media screen and (max-width: 414px) {
