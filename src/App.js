@@ -58,7 +58,7 @@ class App extends Component {
 
         $('.form__input').focus();
         let height = $(window).height() > 640 ? $(window).height() : 640;
-        $('.container').height(height);
+        $('#fullsize').height(height);
     }
 
     changeIcon() {
@@ -97,7 +97,7 @@ class App extends Component {
     }
 
     handleImageProcess() {
-        let req = request.post('/api/process')
+        let req = request.post(process.env.NODE_ENV === 'production' ? '/api/process' : 'http://localhost:3001/api/process')
             .send({'reason': this.state.reason})
             .send({'image': this.state.fileUrl})
             .send({'file': this.state.file});
@@ -142,7 +142,7 @@ class App extends Component {
             icon = state.icon,
             placeholder = state.placeholders[state.placeholder];
         return (
-            <div>
+            <div id="#fullsize">
                 <div className="image" style={{backgroundImage: 'url(' + this.state.fileUrl + ')'}}/>
                 <div className="container"
                      style={{backgroundColor: this.state.hasImage ? 'rgba(229, 106, 99, .8)' : 'rgba(229, 106, 99, 1)'}}>

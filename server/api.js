@@ -2,6 +2,7 @@ const Entry = require('./models/entry');
 const sharp = require('sharp');
 const request = require('request').defaults({encoding: null});
 const cloudinary = require('cloudinary');
+
 cloudinary.config({
     cloud_name: 'vverh',
     api_key: '482121622684964',
@@ -12,6 +13,7 @@ cloudinary.v2.config({
     api_key: '482121622684964',
     api_secret: 'IZQlGEJqlPg9KXr0yxw9Rcap0dU',
 });
+
 const TextToSVG = require('text-to-svg');
 
 class MainApi {
@@ -37,9 +39,11 @@ class MainApi {
         const base = sharp(body)
             .resize(1210, 630)
             .crop(sharp.strategy.entropy)
+            .normalize()
+            .gamma(1.5)
             .toBuffer();
 
-        let yOffset = 200;
+        let yOffset = 170;
         const composite = [
             {image: MainApi.getSvg('#000000'), options: {top: 307, left: 80}},
             {image: MainApi.getSvg('#fc991a'), options: {top: 278, left: 63}},
@@ -66,7 +70,10 @@ class MainApi {
 
     async convertPic(params) {
         return new Promise(resolve => {
-            request.get(params.image, (err, res, body) => {
+            request.get(cloudinary.url(params.file.public_id, {
+                angle: 'exif',
+                effect: 'art:athena',
+            }), (err, res, body) => {
                 let image = this.getPic(body, params.reason);
 
                 image.then((buff) => {
@@ -75,12 +82,10 @@ class MainApi {
                     sharp(buff).png().toFile('output.png', function (err, info) {
                         console.log(err);
                         console.log(info);
-
                     });
 
                     cloudinary.v2.uploader.upload_stream({resource_type: 'raw'},
                         (error, result) => {
-
                             console.log('upload');
                             console.log(result);
                             console.log(error);
