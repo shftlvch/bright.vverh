@@ -18,7 +18,7 @@ body {
     flex-direction: column;
     background: rgba(229, 106, 99, 1);
     z-index: 10;
-    transition: 1s;
+    transition: background-image 1s ease-in-out;
     transition-delay: .3s;
 }
 
@@ -160,11 +160,18 @@ body {
 }
 
 @media screen and (max-width: 414px) {
+    .note {
+        font-size: 12px;
+    }
     .form__header, .form__input {
         font-size: 26px;
     }
 
     .form__file {
+        width: 100%;
+    }
+
+    .form__btn {
         width: 100%;
     }
 

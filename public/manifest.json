@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "SSR Create React App",
+  "short_name": "#мне_не_серо_когда",
+  "name": "#мне_не_серо_когда — Центр равных возможностей для детей-сирот «Вверх»",
   "icons": [
     {
       "src": "favicon.ico",
@@ -10,7 +10,7 @@
   ],
   "start_url": "./index.html",
   "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff",
+  "theme_color": "#ff7f00",
+  "background_color": "#ff7f00",
   "orientation": "portrait"
 }

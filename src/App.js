@@ -10,8 +10,6 @@ import Dropzone from "react-dropzone";
 
 import Share from './components/Share';
 
-import {generateShareIcon, ShareButtons, ShareCounts} from "react-share";
-
 const CLOUDINARY_UPLOAD_PRESET = 'b9txgygb';
 const CLOUDINARY_UPLOAD_URL = 'https://api.cloudinary.com/v1_1/vverh/upload';
 
@@ -59,6 +57,8 @@ class App extends Component {
         });
 
         $('.form__input').focus();
+        let height = $(window).height() > 640 ? $(window).height() : 640;
+        $('.container').height(height);
     }
 
     changeIcon() {
@@ -88,8 +88,6 @@ class App extends Component {
             this.handleImageProcess();
 
         }
-
-
         console.log('send');
 
     }
@@ -155,6 +153,7 @@ class App extends Component {
                         <div className="form">
                             <header className="form__header">#мне_не_серо_когда</header>
                             <input className={'form__input ' + (!this.state.valid ? 'form__input_error' : '') }
+                                   maxlength="20"
                                    value={this.state.reason} onChange={this.handleChange} placeholder={placeholder}/>
                             {!this.state.hasImage ?
                                 <Dropzone className="form__file" onDrop={this.onDrop.bind(this)}
