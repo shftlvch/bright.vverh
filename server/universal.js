@@ -3,6 +3,7 @@ const fs = require('fs')
 
 const DocumentMeta = require('react-document-meta')
 
+const api = require('./api')
 const {render, renderHead} = require('../babel-src/serverRender')
 
 module.exports = function universalLoader(req, res) {
@@ -24,7 +25,7 @@ module.exports = function universalLoader(req, res) {
 
 // this does most of the heavy lifting
 async function serverRender(req, res, htmlData) {
-    const context = {data: {}, head: [], req}
+    const context = {data: {}, head: [], req, api}
     // first
     render(req, context)
 

@@ -148,6 +148,17 @@ body {
     width: 20px;
 }
 
+.result {
+    width: 640px;
+    margin: 0 auto;
+}
+
+
+.result__image {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
 @media screen and (max-width: 414px) {
     .form__header, .form__input {
         font-size: 26px;
@@ -157,5 +168,16 @@ body {
         width: 100%;
     }
 
+    .result {
+        width: 320px;
+    }
+
+}
+
+
+@media screen and (min-width: 415px) {
+    .note {
+        width: 640px;
+    }
 
 }

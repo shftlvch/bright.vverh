@@ -9,6 +9,12 @@ const path = require('path')
 const fs = require('fs')
 const md5File = require('md5-file')
 
+const mongoose  = require('mongoose')
+
+mongoose.connect('mongodb://vverh:brightMeUp@ds044787.mlab.com:44787/vverh', {
+    useMongoClient: true,
+});
+
 const mimeTypes = {
   '.jpg': 'image/jpeg'
 , '.png': 'image/png'
@@ -30,6 +36,7 @@ register(undefined, (mod, filename) => {
 
 // routes
 const index = require('./routes/index')
+const api = require('./routes/api')
 const universalLoader = require('./universal')
 
 // App setup
@@ -49,6 +56,8 @@ app.use('/', index)
 
 // Serve static assets
 app.use(express.static(path.resolve(__dirname, '..', 'build')))
+
+app.use('/api', api)
 
 // Always return the main index.html, so react-router render the route in the client
 app.use('/', universalLoader)
