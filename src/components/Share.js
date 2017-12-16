@@ -28,44 +28,44 @@ class Share extends Component {
         const title = '#мне_не_серо_когда';
 
         return (
-            <div className="Share">
-                <div className="Share__item">
+            <div className="share">
+                <div className="share__item">
                     <FacebookShareButton
                         url={shareUrl}
                         quote={title}
-                        className="Share__item__share-button">
+                        className="share__item__share-button">
                         <FacebookIcon
                             size={32}
                             round />
                     </FacebookShareButton>
                 </div>
 
-                <div className="Share__item">
+                <div className="share__item">
                     <TelegramShareButton
                         url={shareUrl}
                         title={title}
-                        className="Share__item__share-button">
+                        className="share__item__share-button">
                         <TelegramIcon size={32} round />
                     </TelegramShareButton>
                 </div>
 
-                <div className="Share__item">
+                <div className="share__item">
                     <WhatsappShareButton
                         url={shareUrl}
                         title={title}
                         separator=":: "
-                        className="Share__item__share-button">
+                        className="share__item__share-button">
                         <WhatsappIcon size={32} round />
                     </WhatsappShareButton>
                 </div>
 
-                <div className="Share__item">
+                <div className="share__item">
                     <VKShareButton
                         url={shareUrl}
                         // image={`${String(window.location)}/${exampleImage}`}
                         windowWidth={660}
                         windowHeight={460}
-                        className="Share__item__share-button">
+                        className="share__item__share-button">
                         <VKIcon
                             size={32}
                             round />

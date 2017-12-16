@@ -10,6 +10,7 @@ body {
     width: 100vw;
     position: relative;
 }
+
 .container {
     top: 0;
     left: 0;
@@ -22,8 +23,8 @@ body {
     flex-direction: column;
     background: rgba(229, 106, 99, 1);
     z-index: 10;
-    transition: background-image 1s ease-in-out;
-    transition-delay: .3s;
+    transition: background-color 1s ease-in-out;
+    transition-delay: .5s;
 }
 
 .image {
@@ -71,19 +72,13 @@ body {
 }
 
 .form__file {
-    font-size: 1em;
-    color: white;
-    background-color: #76c4be;
     display: inline-block;
-    cursor: pointer;
     width: 50%;
     margin: 0 auto 20px auto;
     padding: 11px 10px 9px 10px;
-    text-align: center;
-    box-sizing: border-box;
 }
 
-.form__file .fa{
+.form__file .fa, .btn .fa {
     margin-right: 10px;
 }
 
@@ -96,45 +91,55 @@ body {
     outline: none;
 }
 
-.form__btn {
+.btn {
+    cursor: pointer;
     font-size: 1em;
+    line-height: 1em;
     color: white;
     background-color: #76c4be;
     display: inline-block;
-    cursor: pointer;
-    margin: 0 auto 20px auto;
     padding: 10px 25px;
     text-align: center;
     box-sizing: border-box;
     border: none;
+    text-decoration: none;
+    border-radius: 3px;
+}
+
+.btn_donate {
+    background-color: #fc991a;
+}
+
+.form__btn {
+    margin: 0 auto 20px auto;
 }
 
 .form__btn:focus {
     outline: none;
 }
+
 .form__btn:focus,
 .form__btn:hover {
     background-color: #70b9b3;
 }
 
-
-
 .logo {
     height: 80px;
     text-align: center;
     width: 100%;
-    margin-top: 30px;
+    margin-top: auto;
     margin-bottom: auto;
+    padding-top: 10px;
+    opacity: .8;
 }
 
 .logo__image {
     height: 100%;
-    filter: grayscale(100%) invert(40%);
 }
 
 .note {
     padding: 0 20px;
-    margin-bottom: 70px;
+    margin-bottom: 10px;
     margin-top: auto;
     color: #fbdfe1;
     font-size: 14px;
@@ -157,18 +162,41 @@ body {
 .result {
     width: 640px;
     margin: 0 auto;
+    padding: 10px 20px;
+    box-sizing: border-box;
 }
-
 
 .result__image {
     width: 100%;
     margin-bottom: 20px;
 }
 
+.result__share-label {
+    font-size: 14px;
+    text-transform: uppercase;
+    color: #fbdfe1;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.result .share {
+    margin-bottom: 20px;
+}
+
+.result__donate, .result__reset {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.result__reset {
+
+}
+
 @media screen and (max-width: 414px) {
     .note {
         font-size: 12px;
     }
+
     .form__header, .form__input {
         font-size: 26px;
     }
@@ -182,11 +210,10 @@ body {
     }
 
     .result {
-        width: 320px;
+        width: 100%;
     }
 
 }
-
 
 @media screen and (min-width: 415px) {
     .note {

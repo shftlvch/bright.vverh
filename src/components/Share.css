@@ -1,13 +1,13 @@
-.Share {
+.share {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
 }
 
-.Share__item {
+.share__item {
     margin-right: 10px;
 }
 
-.Share__item:hover {
+.share__item:hover {
     opacity: .7;
 }

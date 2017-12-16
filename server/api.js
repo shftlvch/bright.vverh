@@ -2,6 +2,7 @@ const Entry = require('./models/entry');
 const sharp = require('sharp');
 const request = require('request').defaults({encoding: null});
 const cloudinary = require('cloudinary');
+const Vibrant = require('node-vibrant');
 
 cloudinary.config({
     cloud_name: 'vverh',
@@ -70,30 +71,39 @@ class MainApi {
 
     async convertPic(params) {
         return new Promise(resolve => {
-            request.get(cloudinary.url(params.file.public_id, {
+            let url = cloudinary.url(params.file.public_id, {
                 angle: 'exif',
-                effect: 'art:athena',
-            }), (err, res, body) => {
+                // effect: 'art:athena',
+            });
+            request.get(url, (err, res, body) => {
                 let image = this.getPic(body, params.reason);
 
-                image.then((buff) => {
-                    console.log(buff);
+                Vibrant.from(body).getPalette((err, palette) =>
+                {
+                    let vibrant = palette.DarkVibrant.getRgb();
 
-                    sharp(buff).png().toFile('output.png', function (err, info) {
-                        console.log(err);
-                        console.log(info);
+                    image.then((buff) => {
+                        console.log(buff);
+
+                        // sharp(buff).png().toFile('output.png', function (err, info) {
+                        //     console.log(err);
+                        //     console.log(info);
+                        // });
+                        
+                        cloudinary.v2.uploader.upload_stream({resource_type: 'raw'},
+                            (error, result) => {
+                                console.log('upload');
+                                console.log(result);
+                                console.log(error);
+
+                                resolve({result, vibrant});
+                            })
+                            .end(buff);
                     });
 
-                    cloudinary.v2.uploader.upload_stream({resource_type: 'raw'},
-                        (error, result) => {
-                            console.log('upload');
-                            console.log(result);
-                            console.log(error);
-
-                            resolve(result);
-                        })
-                        .end(buff);
                 });
+
+
             });
         })
     }

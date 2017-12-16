@@ -1,14 +1,14 @@
 import React, {Component} from "react";
 
 import "./App.css";
-import logo from "./assets/logo.png";
+import logo from "./assets/logo-pink.png";
 import "./assets/font-awesome/css/font-awesome.css";
 import $ from "jquery";
 import Typed from "typed.js";
 import request from "superagent";
 import Dropzone from "react-dropzone";
 
-import Share from './components/Share';
+import Share from "./components/Share";
 
 const CLOUDINARY_UPLOAD_PRESET = 'b9txgygb';
 const CLOUDINARY_UPLOAD_URL = 'https://api.cloudinary.com/v1_1/vverh/upload';
@@ -38,6 +38,7 @@ class App extends Component {
         this.changeIcon = this.changeIcon.bind(this);
         this.onDrop = this.onDrop.bind(this);
         this.onSend = this.onSend.bind(this);
+        this.onReset = this.onReset.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleImageProcess = this.handleImageProcess.bind(this);
     }
@@ -57,8 +58,10 @@ class App extends Component {
         });
 
         $('.form__input').focus();
-        let height = $(window).height() > 640 ? $(window).height() : 640;
+        let height = window.innerHeight > 590 ? window.innerHeight : 590;
         $('#fullsize').height(height);
+        $('#root').animate({opacity: 1});
+
     }
 
     changeIcon() {
@@ -92,6 +95,20 @@ class App extends Component {
 
     }
 
+    onReset() {
+        this.setState(
+            {
+                pic: false,
+                imageGenerated: false,
+                isLoading: false,
+                hasImage: false,
+                valid: true,
+                file: false,
+                fileUrl: '',
+            }
+        );
+    }
+
     handleChange(event) {
         this.setState({reason: event.target.value});
     }
@@ -108,8 +125,11 @@ class App extends Component {
             }
             if (response.hasOwnProperty('body') && response.body !== '') {
                 console.error(response.body);
-                this.setState({pic: response.body.data.object.url});
-                this.setState({imageGenerated: true});
+                this.setState({
+                    pic: response.body.data.object.url,
+                    imageGenerated: true,
+                    backgroundColor: App.getRGBA(response.body.data.vibrant, 0.8)
+                });
             }
         });
     }
@@ -132,9 +152,14 @@ class App extends Component {
                     file: response.body,
                     hasImage: true,
                     isLoading: false,
+                    backgroundColor: App.getRGBA([229, 106, 99], 0.8)
                 });
+                this.onSend();
             }
         });
+    }
+    static getRGBA(color, opacity) {
+        return `rgba(${Math.floor(color[0])}, ${Math.floor(color[1])}, ${Math.floor(color[2])}, ${opacity}) `
     }
 
     render() {
@@ -142,10 +167,10 @@ class App extends Component {
             icon = state.icon,
             placeholder = state.placeholders[state.placeholder];
         return (
-            <div id="#fullsize">
+            <div id="fullsize">
                 <div className="image" style={{backgroundImage: 'url(' + this.state.fileUrl + ')'}}/>
                 <div className="container"
-                     style={{backgroundColor: this.state.hasImage ? 'rgba(229, 106, 99, .8)' : 'rgba(229, 106, 99, 1)'}}>
+                     style={{backgroundColor: this.state.backgroundColor ? this.state.backgroundColor : App.getRGBA([229, 106, 99, 1])}}>
                     <a href="https://vverh.su/" target="_blank" rel="noopener noreferrer" className="logo"><img
                         className="logo__image"
                         src={logo}/></a>
@@ -156,29 +181,44 @@ class App extends Component {
                                    maxlength="20"
                                    value={this.state.reason} onChange={this.handleChange} placeholder={placeholder}/>
                             {!this.state.hasImage ?
-                                <Dropzone className="form__file" onDrop={this.onDrop.bind(this)}
+                                <Dropzone className="form__file btn" onDrop={this.onDrop.bind(this)}
+                                          disabled={this.state.isLoading}
                                           accept="image/jpeg,image/png,image/gif">
 
                                     {!this.state.isLoading ? [<i className={"fa " + icon}
                                                                  aria-hidden="true"/>, 'Сэлфи или картинка'] :
-                                        <i className="fa fa-refresh fa-spin fa-fw" aria-hidden="true"/>}
+                                        [<i className="fa fa-refresh fa-spin fa-fw" aria-hidden="true"/>, 'Подождите, пожалуйста']}
                                 </Dropzone> :
-                                <div className="form__btn" onClick={this.onSend}>
+                                <button className="form__btn btn"
+                                     disabled={this.state.isLoading}
+                                     onClick={this.onSend}
+                                >
                                     {!this.state.isLoading ? [<i className={"fa " + icon}
                                                                  aria-hidden="true"/>, 'Сделать картинку'] :
-                                        <i className="fa fa-refresh fa-spin fa-fw" aria-hidden="true"/>}
-                                </div>
+                                        [<i className="fa fa-refresh fa-spin fa-fw" aria-hidden="true"/>, 'Делаем красоту...']}
+                                </button>
                             }
                         </div>
                     </div> :
                         <div className="result">
                             <img className="result__image" src={this.state.pic}/>
-                            <Share/>
+                            <div className="result__share-label">Поделитесь мотивацией:</div>
+                            <Share className="result__share"/>
+                            <a href="https://vverh.su/campaign/help/"
+                               target="_blank" rel="noopener noreferrer"
+                               className="btn btn_donate result__donate">
+                                <i className="fa fa-heart-o" aria-hidden="true"/>
+                                Помочь «Вверху»
+                            </a>
+                            <button className="btn result__reset" onClick={this.onReset}>
+                                <i className="fa fa-refresh" aria-hidden="true"/>
+                                Начать заново
+                            </button>
                         </div>
                     }
                     <div className="note">
                         <div className="note__line"/>
-                        <p className="note__text">Как побороть серость вокруг? Пожаловаться в соцсетях? Нет, этот
+                        <p className="note__text">Как побороть серость вокруг и дотянуть до праздников? Пожаловаться в соцсетях? Нет, этот
                             путь не для нас. Наоборот, расскажите друзьям что держит вас в колее и помогает не
                             унывать эти 7 месяцев в году.</p>
                         <div className="note__copy">Сделано с <a target="_blank" rel="noopener noreferrer"

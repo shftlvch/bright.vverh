@@ -21,8 +21,10 @@ router.get('/save', async function (req, res, next) {
 router.options('/process', cors()); // enable pre-flight request for DELETE request
 router.post('/process', cors(), async function (req, res, next) {
     const db = new MainApi();
+
+
     const object = await db.convertPic(req.body);
-    const data = {object};
+    const data = {object: object.result, vibrant: object.vibrant};
     res.json({data, status: 'ok'});
 });
 
