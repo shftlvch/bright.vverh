@@ -202,7 +202,7 @@ class App extends Component {
                             <div className="form">
                                 <header className="form__header">#мне_не_серо_когда</header>
                                 <input className={'form__input ' + (!this.state.valid ? 'form__input_error' : '') }
-                                       maxlength="20"
+                                       maxLength="20"
                                        value={this.state.reason} onChange={this.handleChange}
                                        placeholder={placeholder}/>
                                 {!this.state.hasImage ?
@@ -210,19 +210,19 @@ class App extends Component {
                                               disabled={this.state.isLoading}
                                               accept="image/jpeg,image/png,image/gif">
 
-                                        {!this.state.isLoading ? [<i className={"fa " + icon}
-                                                                     aria-hidden="true"/>, 'Сэлфи или картинка'] :
-                                            [<i className="fa fa-refresh fa-spin fa-fw"
-                                                aria-hidden="true"/>, 'Подождите, пожалуйста']}
+                                        {!this.state.isLoading ? <span><i className={"fa " + icon}
+                                                                     aria-hidden="true"/> Сэлфи или картинка</span> :
+                                            <span><i className="fa fa-refresh fa-spin fa-fw"
+                                                     aria-hidden="true"/> Подождите, пожалуйста</span>}
                                     </Dropzone> :
                                     <button className="form__btn btn"
                                             disabled={this.state.isLoading}
                                             onClick={this.onSend}
                                     >
-                                        {!this.state.isLoading ? [<i className={"fa " + icon}
-                                                                     aria-hidden="true"/>, 'Сделать картинку'] :
-                                            [<i className="fa fa-refresh fa-spin fa-fw"
-                                                aria-hidden="true"/>, 'Делаем красоту...']}
+                                        {!this.state.isLoading ?  <span><i className={"fa " + icon}
+                                                                           aria-hidden="true"/> Сделать картинку</span> :
+                                            <span><i className="fa fa-refresh fa-spin fa-fw"
+                                                     aria-hidden="true"/> Делаем красоту...</span>}
                                     </button>
                                 }
                             </div>

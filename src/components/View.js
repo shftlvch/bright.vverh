@@ -17,7 +17,7 @@ export default class View extends Component {
     }
 
     componentDidMount() {
-
+        window.location.replace("/");
     }
 
     async _handleData(key) {

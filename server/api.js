@@ -109,7 +109,7 @@ class MainApi {
                         //     console.log(info);
                         // });
 
-                        cloudinary.v2.uploader.upload_stream({resource_type: 'raw'},
+                        cloudinary.v2.uploader.upload_stream({resource_type: 'image'},
                             (error, result) => {
                                 console.log('upload');
                                 console.log(result);

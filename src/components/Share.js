@@ -25,7 +25,6 @@ const WhatsappIcon = generateShareIcon('whatsapp');
 class Share extends Component {
     render() {
         const shareUrl = this.props.url;
-        const title = this.props.title;
         const image =  this.props.image;
 
         return (
@@ -33,7 +32,6 @@ class Share extends Component {
                 <div className="share__item">
                     <FacebookShareButton
                         url={shareUrl}
-                        quote={title}
                         className="share__item__share-button">
                         <FacebookIcon
                             size={32}
@@ -44,7 +42,6 @@ class Share extends Component {
                 <div className="share__item">
                     <TelegramShareButton
                         url={shareUrl}
-                        title={title}
                         className="share__item__share-button">
                         <TelegramIcon size={32} round />
                     </TelegramShareButton>
@@ -53,7 +50,6 @@ class Share extends Component {
                 <div className="share__item">
                     <WhatsappShareButton
                         url={shareUrl}
-                        title={title}
                         separator=":: "
                         className="share__item__share-button">
                         <WhatsappIcon size={32} round />
