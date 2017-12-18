@@ -22,6 +22,20 @@ class MainApi {
         return Entry.find().exec()
     }
 
+    async getEntry(hash) {
+        return Entry.findOne({hash}).exec()
+    }
+
+    async saveModel(hash, pic, reason) {
+        let model = new Entry({
+            hash,
+            pic,
+            reason
+        });
+        return model.save();
+    }
+
+
     //server/fonts/OpenSans-Light.ttf
     static async getSvg(color, text = '#мне_не_серо_когда') {
         const textToSVG = TextToSVG.loadSync('server/fonts/OpenSans-Regular.ttf');
@@ -52,7 +66,10 @@ class MainApi {
             {image: MainApi.getSvg('#000000', reason), options: {top: 307 + yOffset, left: 80}},
             {image: MainApi.getSvg('#fc991a', reason), options: {top: 278 + yOffset, left: 63}},
             {image: MainApi.getSvg('#ffffff', reason), options: {top: 253 + yOffset, left: 41}},
-            {image: sharp('src/assets/logo.png').resize(115, 150).png().toBuffer(), options: {top: 20, left: 1210-115-40}},
+            {
+                image: sharp('src/assets/logo.png').resize(115, 150).png().toBuffer(),
+                options: {top: 20, left: 1210 - 115 - 40}
+            },
         ]
             .reduce((input, overlay) => {
                 return input.then((data) => {
@@ -76,26 +93,32 @@ class MainApi {
                 // effect: 'art:athena',
             });
             request.get(url, (err, res, body) => {
+
                 let image = this.getPic(body, params.reason);
 
-                Vibrant.from(body).getPalette((err, palette) =>
-                {
-                    let vibrant = palette.DarkVibrant.getRgb();
+                Vibrant.from(body).getPalette((err, palette) => {
+
+                    let vibrant = [0, 0, 0];
+                    vibrant = palette.DarkMuted ? palette.DarkMuted.getRgb() : vibrant;
+                    vibrant = palette.DarkVibrant ? palette.DarkVibrant.getRgb() : vibrant;
 
                     image.then((buff) => {
-                        console.log(buff);
 
                         // sharp(buff).png().toFile('output.png', function (err, info) {
                         //     console.log(err);
                         //     console.log(info);
                         // });
-                        
+
                         cloudinary.v2.uploader.upload_stream({resource_type: 'raw'},
                             (error, result) => {
                                 console.log('upload');
                                 console.log(result);
                                 console.log(error);
 
+                                this.saveModel(
+                                    result.public_id,
+                                    result,
+                                    params.reason);
                                 resolve({result, vibrant});
                             })
                             .end(buff);

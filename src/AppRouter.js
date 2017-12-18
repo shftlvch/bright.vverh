@@ -11,7 +11,7 @@ class AppRouter extends Component {
             <main>
                 <Switch>
                     <Route exact path='/' component={App}/>
-                    <Route path='/view' component={View}/>
+                    <Route path='/view/:hash' component={View}/>
                     <Route component={NoMatch}/>
                 </Switch>
             </main>

@@ -52,8 +52,8 @@ async function serverRender(req, res, htmlData) {
     } else {
         // we're good, add in markup, send the response
         const RenderedApp = htmlData.replace('{{SSR}}', markup)
-            .replace('<meta-head/>', headMarkup)
-            .replace('<meta-seo/>', metaSeo)
+            .replace('<meta-head></meta-head>', headMarkup)
+            .replace('<meta-seo></meta-seo>', metaSeo)
             .replace('{{data}}', new Buffer(JSON.stringify(context.data)).toString('base64'))
         if (context.code)
             res.status(context.code)

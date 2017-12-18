@@ -24,8 +24,9 @@ const WhatsappIcon = generateShareIcon('whatsapp');
 
 class Share extends Component {
     render() {
-        const shareUrl = 'http://bright.vverh.su/';
-        const title = '#мне_не_серо_когда';
+        const shareUrl = this.props.url;
+        const title = this.props.title;
+        const image =  this.props.image;
 
         return (
             <div className="share">
@@ -62,7 +63,7 @@ class Share extends Component {
                 <div className="share__item">
                     <VKShareButton
                         url={shareUrl}
-                        // image={`${String(window.location)}/${exampleImage}`}
+                        image={image}
                         windowWidth={660}
                         windowHeight={460}
                         className="share__item__share-button">
